@@ -1,5 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config();
+import app from "./app";
+import dotenv from "dotenv"
 
-const port = process.env.PORT;
-console.log(port);
+dotenv.config()
+
+app.listen(process.env.PORT,()=>console.log(`server is runnng on the port ${process.env.PORT}`))

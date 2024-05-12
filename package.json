@@ -7,18 +7,28 @@
   "author": "“mugishaj092” <mugishajoseph092@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2"
   },
   "scripts": {
     "dev": "nodemon server.ts",
     "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage",
     "build": "tsc"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.11",
+    "@types/supertest": "^6.0.2",
+    "chai": "^5.1.1",
+    "chai-http": "^4.4.0",
+    "jest": "^29.7.0",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0",
     "typescript": "^5.4.5"
   }
 }
