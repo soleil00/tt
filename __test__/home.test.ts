@@ -1,10 +1,18 @@
-import request from "supertest"
-import {beforeAll,afterAll,jest,expect,test} from "@jest/globals"
-import app from "../app"
+import chai from "chai";
+import chaiHttp from "chai-http";
+import app from "../app";
+const expect = chai.expect;
 
-describe("Testing homepage",()=>{
-  test("Should return 200 statusCode",async()=>{
-    const response = await request(app).get("/")
-    expect(response.body.message).toBe(`server is running`)
-  },10000)
-})
+chai.use(chaiHttp);
+
+describe("Testing home route", () => {
+  it("should return status 200", (done) => {
+    chai
+      .request(app)
+      .get("/")
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+});

@@ -2,3 +2,5 @@
 .env
 /coverage
 package-lock.json
+.nyc_output
+.test_report
