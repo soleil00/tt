@@ -1,19 +1,12 @@
-import express, { Request, Response } from "express"
+import express, { Request, Response } from "express";
 
-const app= express()
+const app = express();
 
-app.get("/",(req:Request,res:Response)=>{
-  try {
-    return res.status(200).json({
-      message:"server is running"
-    })
-  } catch (error:any) {
-    res.status(500).json({
-      message:error.message
-    })
-  }
-})
+app.use(express.json());
 
+// Route handler with underscore to indicate unused parameter
+app.get("/", (_req: Request, res: Response) => {
+  return res.json({ message: "welcome to ATLP Backend APIs" });
+});
 
-export default app
-
+export default app;
