@@ -1,17 +1,41 @@
-// generate-badge.js
+import fetch from "node-fetch";
+import * as fs from "fs";
+import * as path from "path";
 
-const badge = require("badge-generator");
-const fs = require("fs");
-const path = require("path");
+// Read the coverage summary
+const coverageSummaryPath = path.join(
+  __dirname,
+  ".test_report",
+  "coverage-summary.json"
+);
+if (!fs.existsSync(coverageSummaryPath)) {
+  throw new Error("Coverage summary file not found.");
+}
 
-const coverageSummary = require("./coverage/coverage-summary.json");
-
+const coverageSummary = JSON.parse(
+  fs.readFileSync(coverageSummaryPath, "utf-8")
+);
 const totalCoverage = coverageSummary.total.lines.pct;
 
-const badgeData = {
-  label: "coverage",
-  message: `${totalCoverage}%`,
-  color: totalCoverage > 80 ? "green" : totalCoverage > 50 ? "yellow" : "red",
-};
+// Generate badge URL
+const badgeUrl = `https://img.shields.io/badge/coverage-${totalCoverage}%25-${
+  totalCoverage >= 95 ? "green" : totalCoverage >= 80 ? "yellow" : "red"
+}.svg`;
 
-badge(badgeData, path.join(__dirname, "coverage", "coverage-badge.svg"));
+const badgePath = path.join(__dirname, "coverage-badge.svg");
+
+// Fetch the badge from Shields.io and save it locally
+fetch(badgeUrl)
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error("Failed to fetch badge");
+    }
+    return res.buffer();
+  })
+  .then((buffer) => {
+    fs.writeFileSync(badgePath, buffer);
+    console.log("Coverage badge generated successfully.");
+  })
+  .catch((err) => {
+    console.error("Error generating badge:", err);
+  });
